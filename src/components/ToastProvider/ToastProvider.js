@@ -18,10 +18,20 @@ function ToastProvider({ children }) {
     setToastList(nextToastList);
   }
 
+  React.useEffect(() => {
+    function handleEvent(event) {
+      if (event.key === "Escape") {
+        setToastList([]);
+      }
+    }
+
+    window.addEventListener("keydown", handleEvent);
+
+    return () => window.removeEventListener("keydown", handleEvent);
+  }, []);
+
   return (
-    <ToastContext.Provider
-      value={{ toastList, addToast, dismissToast }}
-    >
+    <ToastContext.Provider value={{ toastList, addToast, dismissToast }}>
       {children}
     </ToastContext.Provider>
   );
